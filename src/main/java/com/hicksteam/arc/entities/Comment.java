@@ -11,6 +11,15 @@ public class Comment
     private long authorId;
     private String content = "";
 
+    public Comment(long id, long postId, Long parentCommentId, long authorId, String content)
+    {
+        this.id = id;
+        this.postId = postId;
+        this.parentCommentId = parentCommentId;
+        this.authorId = authorId;
+        this.content = content;
+    }
+
     @Override
     public String toString()
     {
