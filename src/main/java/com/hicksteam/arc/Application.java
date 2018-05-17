@@ -1,5 +1,6 @@
 package com.hicksteam.arc;
 
+import com.hicksteam.arc.entities.PostRowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -38,25 +40,26 @@ public class Application
 
             log.info("Creating tables");
 
-            jdbcTemplate.execute("DROP TABLE IF EXISTS customers");
-            jdbcTemplate.execute("CREATE TABLE customers(" +
-                    "id SERIAL, first_name VARCHAR(255), last_name VARCHAR(255))");
+            jdbcTemplate.execute("DROP TABLE IF EXISTS posts");
+            jdbcTemplate.execute("CREATE TABLE posts(" +
+                    "id SERIAL, title VARCHAR(255), content VARCHAR(255), author_id bigint)");
 
             // Split up the array of whole names into an array of first/last names
-            List<Object[]> splitUpNames = Stream.of("John Woo", "Jeff Dean", "Josh Bloch", "Josh Long")
-                    .map(name -> name.split(" "))
-                    .collect(Collectors.toList());
+            List<Object[]> splitUpData = new ArrayList<>();
+            splitUpData.add(new Object[] {"title1", "MyContent", 1});
+            splitUpData.add(new Object[] {"title2", "MyContent2", 2});
+            splitUpData.add(new Object[] {"testTitle", "MyContent3", 3});
 
             // Use a Java 8 stream to print out each tuple of the list
-            splitUpNames.forEach(name -> log.info(String.format("Inserting customer record for %s %s", name[0], name[1])));
+            splitUpData.forEach(data -> log.info(String.format("Inserting post record for %s %s %s", data[0], data[1], data[2])));
 
             // Uses JdbcTemplate's batchUpdate operation to bulk load data
-            jdbcTemplate.batchUpdate("INSERT INTO customers(first_name, last_name) VALUES (?,?)", splitUpNames);
+            jdbcTemplate.batchUpdate("INSERT INTO posts(title, content, author_id) VALUES (?,?,?)", splitUpData);
 
-            log.info("Querying for customer records where first_name = 'Josh':");
-            String query = "SELECT id, first_name, last_name FROM customers WHERE first_name = ?";
-            jdbcTemplate.query(query, new Object[]{"Josh"}, new CustomerRowMapper())
-                    .forEach(customer -> log.info(customer.toString()));
+            log.info("Querying for post records where title = 'testTitle':");
+            String query = "SELECT id, title, content, author_id FROM posts WHERE title = ?";
+            jdbcTemplate.query(query, new Object[]{"testTitle"}, new PostRowMapper())
+                    .forEach(post -> log.info(post.toString()));
 
         };
     }

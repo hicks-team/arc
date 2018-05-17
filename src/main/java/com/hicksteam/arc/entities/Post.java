@@ -15,6 +15,16 @@ public class Post
         this.authorId = authorId;
     }
 
+    public String toString()
+    {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", authorId=" + authorId +
+                '}';
+    }
+
     public long getId()
     {
         return id;

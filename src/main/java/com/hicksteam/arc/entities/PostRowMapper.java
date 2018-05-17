@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PostsRowMapper implements RowMapper<Post>
+public class PostRowMapper implements RowMapper<Post>
 {
     @Override
     public Post mapRow(ResultSet row, int rowNum) throws SQLException
