@@ -24,10 +24,6 @@ repositories {
 }
 
 dependencies {
-    jooqRuntime 'org.postgresql:postgresql:42.2.2'
-}
-
-dependencies {
     compile("org.springframework.boot:spring-boot-devtools")
     compile('org.springframework.boot:spring-boot-starter-jdbc')
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
