@@ -4,7 +4,6 @@ import java.util.Objects;
 
 public class Comment
 {
-
     private long id;
     private long postId;
     private Long parentCommentId;
@@ -14,6 +13,15 @@ public class Comment
     public Comment(long id, long postId, Long parentCommentId, long authorId, String content)
     {
         this.id = id;
+        this.postId = postId;
+        this.parentCommentId = parentCommentId;
+        this.authorId = authorId;
+        this.content = content;
+    }
+
+    public Comment() {}
+    public Comment( long postId, Long parentCommentId, long authorId, String content)
+    {
         this.postId = postId;
         this.parentCommentId = parentCommentId;
         this.authorId = authorId;
