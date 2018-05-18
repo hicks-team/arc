@@ -51,21 +51,6 @@ export default class Header extends React.Component {
                         <div className="navbar-start">
                             <NavLink to='/library' activeClassName='is-active' className="navbar-item">Library</NavLink>
                             <NavLink to='/playlists' activeClassName='is-active' className="navbar-item">Playlists</NavLink>
-
-                            {
-                                isAdmin &&
-                                <div className={"navbar-item has-dropdown is-hoverable"}>
-                                    <NavLink to='/admin' activeClassName='is-active' className="navbar-link">Admin</NavLink>
-                                    <div className="navbar-dropdown">
-                                        <NavLink to={'/admin/systemSettings'} activeClassName='is-active' className="navbar-item">
-                                            <span className="icon is-medium has-text-info">
-                                                <FontAwesomeIcon icon={faServer}/>
-                                            </span>
-                                            Manage System
-                                        </NavLink>
-                                    </div>
-                                </div>
-                            }
                         </div>
                         <div className="navbar-end">
                             <Link to='/logout'  className="navbar-item">

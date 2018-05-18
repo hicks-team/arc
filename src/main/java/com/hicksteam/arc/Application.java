@@ -28,6 +28,7 @@ public class Application
     {
         this.jdbcTemplate = jdbcTemplate;
         this.commentDAO = commentDAO;
+        DAO.setJdbcTemplate(jdbcTemplate);
     }
 
     public static void main(String[] args)
