@@ -1,7 +1,5 @@
 import React from 'react';
 import {Link, NavLink} from "react-router-dom";
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import faServer from '@fortawesome/fontawesome-free-solid/faServer'
 
 export default class Header extends React.Component {
     componentDidMount() {
@@ -30,14 +28,12 @@ export default class Header extends React.Component {
 
     render()
     {
-        const isAdmin = this.props.isAdmin;
-
         return (
             <nav className="navbar is-primary" role="navigation" aria-label="main navigation">
                 <div className="container">
                     <div className="navbar-brand">
                         <div className="navbar-item">
-                            <img src={"/loon/images/loon.png"} alt="Loon" />
+                            {/*<img src={"/images/arc.png"} alt="Arc" />*/}
                         </div>
 
                         <button className="button navbar-burger" data-target="navMenu">
@@ -49,8 +45,7 @@ export default class Header extends React.Component {
 
                     <div className="navbar-menu" id="navMenu">
                         <div className="navbar-start">
-                            <NavLink to='/library' activeClassName='is-active' className="navbar-item">Library</NavLink>
-                            <NavLink to='/playlists' activeClassName='is-active' className="navbar-item">Playlists</NavLink>
+                            <NavLink to='/' className="navbar-item">ARC</NavLink>
                         </div>
                         <div className="navbar-end">
                             <Link to='/logout'  className="navbar-item">

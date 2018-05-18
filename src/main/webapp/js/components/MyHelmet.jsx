@@ -30,14 +30,6 @@ export default class MyHelmet extends React.Component {
                 <link rel="stylesheet" type="text/css" href={basename + "/styles/style.css"} media="screen" />
                 <script src={basename + "/js/util.js"} />
                 <script src={basename + "/js/ajaxUtil.js"} />
-
-                <style>
-                    {this.props.theme === 'superhero' ?
-                        `#level {background-color: #0c0f29;}`
-                        :
-                        `#level {background-color: #eee;}`
-                    }
-                </style>
             </Helmet>);
     }
 }

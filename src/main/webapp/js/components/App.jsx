@@ -21,8 +21,8 @@ export default class App extends React.Component {
         return (
             <Router history={this.state.history}>
                 <div>
-                    {/*<MyHelmet theme={this.state.theme}/>*/}
-                    {/*<Header isAdmin={isAdmin}/>*/}
+                    <MyHelmet />
+                    <Header />
                     <span>hi</span>
                     {/*<Route exact path='/admin/systemSettings' render={() => <SystemSettings onThemeChange={this.handleThemeChange} />}/>*/}
 
