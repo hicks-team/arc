@@ -1,0 +1,12 @@
+.gradle/
+.idea/
+arc.iml
+build/
+gradle/
+myapp.log
+node_modules/
+out/
+src/main/webapp/WEB-INF/
+src/main/webapp/js/dist/
+yarn-error.log
+yarn.lock
