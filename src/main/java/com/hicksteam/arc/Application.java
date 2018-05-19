@@ -2,10 +2,9 @@ package com.hicksteam.arc;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.hicksteam.arc.entities.Comment;
-import com.hicksteam.arc.entities.CommentDAO;
+import com.hicksteam.arc.entities.CommentRowMapper;
 import com.hicksteam.arc.entities.Post;
 import com.hicksteam.arc.entities.PostRowMapper;
-import org.glassfish.jersey.client.JerseyClient;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +20,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +28,11 @@ public class Application
 {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
     private final JdbcTemplate jdbcTemplate;
-    private final CommentDAO commentDAO;
 
     @Autowired
-    public Application(JdbcTemplate jdbcTemplate, CommentDAO commentDAO)
+    public Application(JdbcTemplate jdbcTemplate)
     {
         this.jdbcTemplate = jdbcTemplate;
-        this.commentDAO = commentDAO;
         DAO.setJdbcTemplate(jdbcTemplate);
     }
 
@@ -102,28 +96,21 @@ public class Application
         jdbcTemplate.batchUpdate("INSERT INTO posts(title, content, author_id) VALUES (?,?,?)", postData);
 
 
-//            List<Object[]> commentData = new ArrayList<>();
-//            commentData.add(new Object[] {1, 1, 0, "Comment 1 for post 1"});
-//            commentData.add(new Object[] {2, 1, 1, "Comment 2 for post 1, child of comment 1"});
-//            commentData.add(new Object[] {3, 2, 0, "Comment 1 for post 2"});
-//            commentData.forEach(data -> log.info(String.format("Inserting comment record for id-%s postId-%s commentParent-%s content-%s", data[0], data[1], data[2], data[3])));
-//            jdbcTemplate.batchUpdate("INSERT INTO comments(id, post_id, parent_comment_id, content) VALUES (?,?,?,?)", commentData);
-
-        List<Comment> comments = new ArrayList<>();
-        comments.add(new Comment(1L, null, 1L, "Comment 1 for post 1"));
-        comments.add(new Comment(1L, 1L, 1L, "Comment 2 for post 1"));
-        comments.add(new Comment(2L, null, 1L, "Comment 1 for post 2"));
-
-        for (Comment comment : comments)
-            commentDAO.create(comment);
-
-        List<Comment> commentsRetrieved = commentDAO.findAll();
-        commentsRetrieved.forEach(comment -> log.info(comment.toString()));
-
+        List<Object[]> commentData = new ArrayList<>();
+        commentData.add(new Object[] {1, 1, 0, "Comment 1 for post 1"});
+        commentData.add(new Object[] {2, 1, 1, "Comment 2 for post 1, child of comment 1"});
+        commentData.add(new Object[] {3, 2, 0, "Comment 1 for post 2"});
+        commentData.forEach(data -> log.info(String.format("Inserting comment record for id-%s postId-%s commentParent-%s content-%s", data[0], data[1], data[2], data[3])));
+        jdbcTemplate.batchUpdate("INSERT INTO comments(id, post_id, parent_comment_id, content) VALUES (?,?,?,?)", commentData);
 
         log.info("Querying for post records where title = 'testTitle':");
         String query = "SELECT id, title, content, author_id FROM posts WHERE title = ?";
         jdbcTemplate.query(query, new Object[]{"testTitle"}, new PostRowMapper())
                 .forEach(post -> log.info(post.toString()));
+
+        log.info("Querying for comment record where parent comment is 1");
+        String query2 = "SELECT id, post_id, parent_comment_id, author_id, content FROM comments WHERE parent_comment_id = ?";
+        jdbcTemplate.query(query2, new Object[]{1}, new CommentRowMapper())
+                .forEach(comment -> log.info(comment.toString()));
     }
 }

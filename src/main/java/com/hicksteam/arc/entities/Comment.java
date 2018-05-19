@@ -1,5 +1,10 @@
 package com.hicksteam.arc.entities;
 
+import com.hicksteam.arc.DAO;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Comment
@@ -13,15 +18,6 @@ public class Comment
     public Comment(long id, long postId, Long parentCommentId, long authorId, String content)
     {
         this.id = id;
-        this.postId = postId;
-        this.parentCommentId = parentCommentId;
-        this.authorId = authorId;
-        this.content = content;
-    }
-
-    public Comment() {}
-    public Comment( long postId, Long parentCommentId, long authorId, String content)
-    {
         this.postId = postId;
         this.parentCommentId = parentCommentId;
         this.authorId = authorId;
@@ -48,6 +44,21 @@ public class Comment
     {
 
         return Objects.hash(id);
+    }
+
+    public static long createComment(Comment comment)
+    {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("parent_comment_id", comment.getParentCommentId());
+        parameters.put("author_id", comment.getAuthorId());
+        parameters.put("content", comment.getContent());
+        parameters.put("post_id", comment.getPostId());
+        Number number = new SimpleJdbcInsert(DAO.getJdbcTemplate())
+                .usingGeneratedKeyColumns("id")
+                .withSchemaName("arc")
+                .withTableName("comments")
+                .executeAndReturnKey(parameters);
+        return number.longValue();
     }
 
     public long getId()
