@@ -25,6 +25,7 @@
     "@fortawesome/react-fontawesome": "^0.0.20",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
+    "jquery": "^3.3.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-helmet": "^5.2.0",

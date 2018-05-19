@@ -1,6 +1,8 @@
 import React from 'react';
 import {Route, Router, Switch} from 'react-router-dom'
 import {createBrowserHistory} from 'history'
+import jQuery from "jquery";
+window.$ = window.jQuery = jQuery;
 
 import Footer from "./Footer.jsx";
 import Header from "./Header.jsx";
@@ -12,9 +14,19 @@ export default class App extends React.Component {
         super(props);
         let self = this;
 
-        const basename = '/arc/view/';
+        // const basename = '/arc/view/';
+        const basename = '/';
         const history = createBrowserHistory({ basename });
         self.state = {history: history};
+        self.state.posts = "";
+    }
+
+    componentDidMount()
+    {
+        let self = this;
+        $.get('/posts', '', function (data) {
+            self.setState({posts: data});
+        });
     }
     
     render() {
@@ -24,6 +36,7 @@ export default class App extends React.Component {
                     <MyHelmet />
                     <Header />
                     <span>hi</span>
+                    <div>{this.state.posts}</div>
                     {/*<Route exact path='/admin/systemSettings' render={() => <SystemSettings onThemeChange={this.handleThemeChange} />}/>*/}
 
 

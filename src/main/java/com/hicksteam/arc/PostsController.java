@@ -5,11 +5,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 
 @RestController
 public class PostsController
 {
+    @GET
     @RequestMapping("/posts")
     public String getAllPosts()
     {

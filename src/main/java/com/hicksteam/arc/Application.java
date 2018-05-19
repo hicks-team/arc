@@ -1,8 +1,12 @@
 package com.hicksteam.arc;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.hicksteam.arc.entities.Comment;
 import com.hicksteam.arc.entities.CommentDAO;
+import com.hicksteam.arc.entities.Post;
 import com.hicksteam.arc.entities.PostRowMapper;
+import org.glassfish.jersey.client.JerseyClient;
+import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,28 +52,54 @@ public class Application
     {
         return args -> {
 
-            log.info("Creating tables");
+            testDB();
 
-            jdbcTemplate.execute("DROP TABLE IF EXISTS posts");
-            jdbcTemplate.execute("CREATE TABLE posts(" +
-                    "id SERIAL, title VARCHAR(255), content VARCHAR(255), author_id bigint)");
-            log.info("created table POSTS");
+            Client client = JerseyClientBuilder.newClient();
+            WebTarget target = client.target("https://api.reddit.com/r/programming/best");
+            Invocation.Builder builder = target.request(MediaType.APPLICATION_JSON);
+            JsonNode jsonNode = builder.get(JsonNode.class);
 
-            jdbcTemplate.execute("DROP TABLE IF EXISTS comments");
-            jdbcTemplate.execute("CREATE TABLE comments(id SERIAL, post_id bigint, parent_comment_id bigint, author_id bigint, content VARCHAR(255), CONSTRAINT pk_comment PRIMARY KEY (id))");
-            log.info("created table COMMENTS");
+            jsonNode
+                    .findValue("data")
+                    .withArray("children")
+                    .forEach(child -> {
+                        JsonNode postData = child.findValue("data");
+                        JsonNode title = postData.findValue("title");
+                        JsonNode selfText = postData.findValue("selftext");
 
-            // Split up the array of whole names into an array of first/last names
-            List<Object[]> postData = new ArrayList<>();
-            postData.add(new Object[] {"title1", "MyContent", 1});
-            postData.add(new Object[] {"title2", "MyContent2", 2});
-            postData.add(new Object[] {"testTitle", "MyContent3", 3});
+                        Post post = new Post();
+                        post.setTitle(title.asText());
+                        post.setContent(selfText.textValue());
 
-            // Use a Java 8 stream to print out each tuple of the list
-            postData.forEach(data -> log.info(String.format("Inserting post record for %s %s %s", data[0], data[1], data[2])));
+                        Post.createPost(post);
+                    });
+        };
+    }
 
-            // Uses JdbcTemplate's batchUpdate operation to bulk load data
-            jdbcTemplate.batchUpdate("INSERT INTO posts(title, content, author_id) VALUES (?,?,?)", postData);
+    private void testDB()
+    {
+        log.info("Creating tables");
+
+        jdbcTemplate.execute("DROP TABLE IF EXISTS posts");
+        jdbcTemplate.execute("CREATE TABLE posts(" +
+                "id SERIAL, title VARCHAR(2000), content VARCHAR(2000), author_id bigint)");
+        log.info("created table POSTS");
+
+        jdbcTemplate.execute("DROP TABLE IF EXISTS comments");
+        jdbcTemplate.execute("CREATE TABLE comments(id SERIAL, post_id bigint, parent_comment_id bigint, author_id bigint, content VARCHAR(255), CONSTRAINT pk_comment PRIMARY KEY (id))");
+        log.info("created table COMMENTS");
+
+        // Split up the array of whole names into an array of first/last names
+        List<Object[]> postData = new ArrayList<>();
+        postData.add(new Object[] {"title1", "MyContent", 1});
+        postData.add(new Object[] {"title2", "MyContent2", 2});
+        postData.add(new Object[] {"testTitle", "MyContent3", 3});
+
+        // Use a Java 8 stream to print out each tuple of the list
+        postData.forEach(data -> log.info(String.format("Inserting post record for %s %s %s", data[0], data[1], data[2])));
+
+        // Uses JdbcTemplate's batchUpdate operation to bulk load data
+        jdbcTemplate.batchUpdate("INSERT INTO posts(title, content, author_id) VALUES (?,?,?)", postData);
 
 
 //            List<Object[]> commentData = new ArrayList<>();
@@ -72,23 +109,21 @@ public class Application
 //            commentData.forEach(data -> log.info(String.format("Inserting comment record for id-%s postId-%s commentParent-%s content-%s", data[0], data[1], data[2], data[3])));
 //            jdbcTemplate.batchUpdate("INSERT INTO comments(id, post_id, parent_comment_id, content) VALUES (?,?,?,?)", commentData);
 
-            List<Comment> comments = new ArrayList<>();
-            comments.add(new Comment(1L, null, 1L, "Comment 1 for post 1"));
-            comments.add(new Comment(1L, 1L, 1L, "Comment 2 for post 1"));
-            comments.add(new Comment(2L, null, 1L, "Comment 1 for post 2"));
+        List<Comment> comments = new ArrayList<>();
+        comments.add(new Comment(1L, null, 1L, "Comment 1 for post 1"));
+        comments.add(new Comment(1L, 1L, 1L, "Comment 2 for post 1"));
+        comments.add(new Comment(2L, null, 1L, "Comment 1 for post 2"));
 
-            for (Comment comment : comments)
-                commentDAO.create(comment);
+        for (Comment comment : comments)
+            commentDAO.create(comment);
 
-            List<Comment> commentsRetrieved = commentDAO.findAll();
-            commentsRetrieved.forEach(comment -> log.info(comment.toString()));
+        List<Comment> commentsRetrieved = commentDAO.findAll();
+        commentsRetrieved.forEach(comment -> log.info(comment.toString()));
 
 
-            log.info("Querying for post records where title = 'testTitle':");
-            String query = "SELECT id, title, content, author_id FROM posts WHERE title = ?";
-            jdbcTemplate.query(query, new Object[]{"testTitle"}, new PostRowMapper())
-                    .forEach(post -> log.info(post.toString()));
-
-        };
+        log.info("Querying for post records where title = 'testTitle':");
+        String query = "SELECT id, title, content, author_id FROM posts WHERE title = ?";
+        jdbcTemplate.query(query, new Object[]{"testTitle"}, new PostRowMapper())
+                .forEach(post -> log.info(post.toString()));
     }
 }

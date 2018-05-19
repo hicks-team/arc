@@ -22,14 +22,14 @@ export default class MyHelmet extends React.Component {
             <Helmet>
                 <meta charset="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <title>Loon</title>
+                <title>Arc</title>
 
                 <link rel="stylesheet" href={themeUrl} />
 
-                <link rel="shortcut icon" href={basename + "/images/puffin.png"} />
-                <link rel="stylesheet" type="text/css" href={basename + "/styles/style.css"} media="screen" />
-                <script src={basename + "/js/util.js"} />
-                <script src={basename + "/js/ajaxUtil.js"} />
+                {/*<link rel="shortcut icon" href={basename + "/images/puffin.png"} />*/}
+                {/*<link rel="stylesheet" type="text/css" href={basename + "/styles/style.css"} media="screen" />*/}
+                {/*<script src={basename + "/js/util.js"} />*/}
+                {/*<script src={basename + "/js/ajaxUtil.js"} />*/}
             </Helmet>);
     }
 }
