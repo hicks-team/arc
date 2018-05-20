@@ -1,8 +1,7 @@
 import React from 'react';
 import {Route, Router, Switch} from 'react-router-dom'
 import {createBrowserHistory} from 'history'
-import jQuery from "jquery";
-window.$ = window.jQuery = jQuery;
+import $ from "jquery";
 
 import Footer from "./Footer.jsx";
 import Header from "./Header.jsx";
@@ -35,7 +34,6 @@ export default class App extends React.Component {
                 <div>
                     <MyHelmet />
                     <Header />
-                    <span>hi</span>
                     <div>{this.state.posts}</div>
                     {/*<Route exact path='/admin/systemSettings' render={() => <SystemSettings onThemeChange={this.handleThemeChange} />}/>*/}
 
