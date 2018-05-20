@@ -4,6 +4,7 @@ import com.hicksteam.arc.DAO;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -46,6 +47,7 @@ public class Comment
         return Objects.hash(id);
     }
 
+    // ------DATA ACCESS METHODS
     public static long createComment(Comment comment)
     {
         Map<String, Object> parameters = new HashMap<>();
@@ -61,6 +63,17 @@ public class Comment
         return number.longValue();
     }
 
+    public static List<Comment> getAllComments()
+    {
+        String query = "select * from comments";
+        List<Comment> comments = DAO.getJdbcTemplate()
+                .query(query, new Object[]{}, new CommentRowMapper());
+
+        return comments;
+    }
+
+
+    //----------GETTERS & SETTERS
     public long getId()
     {
         return id;

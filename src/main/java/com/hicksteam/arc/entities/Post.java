@@ -5,6 +5,7 @@ import com.hicksteam.arc.DAO;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Post
@@ -36,6 +37,7 @@ public class Post
                 '}';
     }
 
+    //----------DATA ACCESS
     public static long createPost(Post post)
     {
         Map<String, Object> parameters = new HashMap<>();
@@ -46,6 +48,15 @@ public class Post
         return number.longValue();
 
 //        DAO.getJdbcTemplate().update("insert into posts (title, content, author_id) values (?, ?, ?)", post.getTitle(), post.getContent(), post.getAuthorId());
+    }
+
+    public static List<Post> getAllPosts()
+    {
+        String query = "select * from posts";
+        List<Post> posts = DAO.getJdbcTemplate()
+                .query(query, new Object[]{}, new PostRowMapper());
+
+        return posts;
     }
 
     public static Post mapJSONtoObject(JsonNode json)

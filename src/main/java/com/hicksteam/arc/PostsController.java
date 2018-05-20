@@ -23,11 +23,8 @@ public class PostsController
     {
         String results = "";
 
-        String query = "select * from posts";
-        List<Post> posts = DAO.getJdbcTemplate()
-                .query(query, new Object[]{}, new PostRowMapper());
-
-        ObjectMapper objectMapper = new ObjectMapper();
+        List<Post> posts = Post.getAllPosts();
+        ObjectMapper objectMapper = JSONutil.objectMapper;
         try
         {
             results = objectMapper.writeValueAsString(posts);
