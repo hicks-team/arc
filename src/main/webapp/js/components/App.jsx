@@ -29,12 +29,20 @@ export default class App extends React.Component {
     }
     
     render() {
+
+        // this.state.posts.map((post, i) => {
+        //
+        // });
+        
+
         return (
             <Router history={this.state.history}>
                 <div>
                     <MyHelmet />
                     <Header />
-                    <div>{this.state.posts}</div>
+                    <div style={{padding: "10px"}}>
+                        {this.state.posts}
+                    </div>
                     {/*<Route exact path='/admin/systemSettings' render={() => <SystemSettings onThemeChange={this.handleThemeChange} />}/>*/}
 
 

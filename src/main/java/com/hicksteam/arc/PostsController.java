@@ -1,28 +1,43 @@
 package com.hicksteam.arc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hicksteam.arc.entities.Post;
 import com.hicksteam.arc.entities.PostRowMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
+import java.util.List;
 
 @RestController
 public class PostsController
 {
+    private static final Logger log = LoggerFactory.getLogger(PostsController.class);
+
     @GET
     @RequestMapping("/posts")
     public String getAllPosts()
     {
-        StringBuilder results = new StringBuilder();
+        String results = "";
 
         String query = "select * from posts";
-        DAO.getJdbcTemplate()
-                .query(query, new Object[]{}, new PostRowMapper())
-                .forEach(results::append);
+        List<Post> posts = DAO.getJdbcTemplate()
+                .query(query, new Object[]{}, new PostRowMapper());
 
-        return results.toString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try
+        {
+            results = objectMapper.writeValueAsString(posts);
+        }
+        catch (Exception e)
+        {
+            log.error(e.getMessage(), e);
+        }
+
+        return results;
     }
 
     @DELETE
