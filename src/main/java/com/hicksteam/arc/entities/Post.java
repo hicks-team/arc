@@ -1,5 +1,6 @@
 package com.hicksteam.arc.entities;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.hicksteam.arc.DAO;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
@@ -45,6 +46,19 @@ public class Post
         return number.longValue();
 
 //        DAO.getJdbcTemplate().update("insert into posts (title, content, author_id) values (?, ?, ?)", post.getTitle(), post.getContent(), post.getAuthorId());
+    }
+
+    public static Post mapJSONtoObject(JsonNode json)
+    {
+        JsonNode postData = json.findValue("data");
+        JsonNode title = postData.findValue("title");
+        JsonNode selfText = postData.findValue("selftext");
+
+        Post post = new Post();
+        post.setTitle(title.asText());
+        post.setContent(selfText.textValue());
+
+        return post;
     }
 
     public long getId()
