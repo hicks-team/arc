@@ -17,23 +17,27 @@ export default class App extends React.Component {
         const basename = '/';
         const history = createBrowserHistory({ basename });
         self.state = {history: history};
-        self.state.posts = "";
+        self.state.posts = [];
     }
 
     componentDidMount()
     {
         let self = this;
-        $.get('/posts', '', function (data) {
-            self.setState({posts: data});
+        $.ajax({
+            url: '/posts',
+            async: false,
+            success: function (data) {
+                self.setState({posts: JSON.parse(data)});
+            }
         });
     }
     
     render() {
-
-        // this.state.posts.map((post, i) => {
-        //
-        // });
-        
+        const postsDiv = this.state.posts.map((post, i) => {
+            return (
+                <div>{i + 1}. {post.title}</div>
+            );
+        });
 
         return (
             <Router history={this.state.history}>
@@ -41,7 +45,7 @@ export default class App extends React.Component {
                     <MyHelmet />
                     <Header />
                     <div style={{padding: "10px"}}>
-                        {this.state.posts}
+                        {postsDiv}
                     </div>
                     {/*<Route exact path='/admin/systemSettings' render={() => <SystemSettings onThemeChange={this.handleThemeChange} />}/>*/}
 
