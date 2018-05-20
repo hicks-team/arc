@@ -57,14 +57,7 @@ public class Application
                     .findValue("data")
                     .withArray("children")
                     .forEach(child -> {
-                        JsonNode postData = child.findValue("data");
-                        JsonNode title = postData.findValue("title");
-                        JsonNode selfText = postData.findValue("selftext");
-
-                        Post post = new Post();
-                        post.setTitle(title.asText());
-                        post.setContent(selfText.textValue());
-
+                        Post post = Post.mapJSONtoObject(child);
                         Post.createPost(post);
                     });
         };
