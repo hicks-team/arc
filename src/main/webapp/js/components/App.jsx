@@ -43,6 +43,8 @@ export default class App extends React.Component {
                                     {post.title}
                                     <br />
                                     {post.author}
+                                    <br />
+                                    comments: {post.comments.length}
                                 </p>
                             </div>
                         </div>
