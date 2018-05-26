@@ -66,15 +66,19 @@ public class Post
         JsonNode selfText = postData.findValue("selftext");
 
         //popular demo users from the reddit posts
+        Long usernameId = null;
         JsonNode authorName = postData.findValue("author");
         String userName = authorName.textValue();
         boolean userExists = User.userExists(userName);
         if (!userExists)
-            User.createUser(new User(userName, "1234", userName+"@yahoo.com"));
+            usernameId = User.createUser(new User(userName, "1234", userName + "@yahoo.com"));
+        else
+            usernameId = User.getUserByUsername(userName).getId();
 
         Post post = new Post();
         post.setTitle(title.asText());
         post.setContent(selfText.textValue());
+        post.setAuthorId(usernameId);
 
         return post;
     }
