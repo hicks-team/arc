@@ -74,5 +74,9 @@ public class Application
         jdbcTemplate.execute("DROP TABLE IF EXISTS comments");
         jdbcTemplate.execute("CREATE TABLE comments(id SERIAL, post_id bigint, parent_comment_id bigint, author_id bigint, content VARCHAR(255), CONSTRAINT pk_comment PRIMARY KEY (id))");
         log.info("created table COMMENTS");
+
+        jdbcTemplate.execute("DROP TABLE IF EXISTS users");
+        jdbcTemplate.execute("CREATE TABLE users(id SERIAL, username text, password text, email text)");
+        log.info("created table USERS");
     }
 }
