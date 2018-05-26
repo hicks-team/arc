@@ -35,7 +35,19 @@ export default class App extends React.Component {
     render() {
         const postsDiv = this.state.posts.map((post, i) => {
             return (
-                <div>{i + 1}. {post.title}</div>
+                <div className="box is-small">
+                    <article className="media">
+                        <div className="media-content">
+                            <div className="content">
+                                <p>
+                                    {post.title}
+                                    <br />
+                                    {post.author}
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
             );
         });
 

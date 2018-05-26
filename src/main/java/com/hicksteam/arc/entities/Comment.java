@@ -72,6 +72,12 @@ public class Comment
         return comments;
     }
 
+    public static List<Comment> getByPostId(long postId)
+    {
+        return DAO.getJdbcTemplate().query("select * from comments where post_id=?",
+                new Object[]{postId}, new CommentRowMapper());
+    }
+
 
     //----------GETTERS & SETTERS
     public long getId()

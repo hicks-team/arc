@@ -36,6 +36,12 @@ public class User
         return number.longValue();
     }
 
+    public static User getById(long id)
+    {
+        return DAO.getJdbcTemplate().query("select * from users where id=?",
+                new Object[]{id}, new UserRowMapper());
+    }
+
     public long getId()
     {
         return id;

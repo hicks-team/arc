@@ -72,6 +72,19 @@ public class Post
         return post;
     }
 
+    public String getAuthor()
+    {
+        User user = User.getById(this.authorId);
+        return user != null ? user.getUsername() : "";
+    }
+
+    public List<Comment> getComments()
+    {
+        return Comment.getByPostId(this.id);
+    }
+
+    //
+
     public long getId()
     {
         return id;
