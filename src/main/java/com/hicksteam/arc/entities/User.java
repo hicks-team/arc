@@ -46,17 +46,27 @@ public class User
 
     public static boolean userExists(String username)
     {
-        List<User> users = DAO.getJdbcTemplate().query("select * from Users where username=?", new Object[]{username}, new UserRowMapper());
-        if (users.size() > 0)
-            return true;
-
-        return false;
+        return getUserByUsername(username) != null;
     }
 
     public static User getById(long id)
     {
+        List<User> users = DAO.getJdbcTemplate().query("select * from users where id=?",
         return DAO.getJdbcTemplate().queryForObject("select * from users where id=?",
                 new Object[]{id}, new UserRowMapper());
+        if (users != null && users.size() > 0)
+            return users.get(0);
+
+        return null;
+    }
+
+    public static User getUserByUsername(String username)
+    {
+        List<User> users = DAO.getJdbcTemplate().query("select * from Users where username=?", new Object[]{username}, new UserRowMapper());
+        if (users.size() > 0)
+            return users.get(0);
+
+        return null;
     }
 
     public long getId()
