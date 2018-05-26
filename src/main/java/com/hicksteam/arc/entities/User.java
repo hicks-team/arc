@@ -51,13 +51,8 @@ public class User
 
     public static User getById(long id)
     {
-        List<User> users = DAO.getJdbcTemplate().query("select * from users where id=?",
         return DAO.getJdbcTemplate().queryForObject("select * from users where id=?",
                 new Object[]{id}, new UserRowMapper());
-        if (users != null && users.size() > 0)
-            return users.get(0);
-
-        return null;
     }
 
     public static User getUserByUsername(String username)
