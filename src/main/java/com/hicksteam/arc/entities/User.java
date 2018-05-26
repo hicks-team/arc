@@ -4,6 +4,7 @@ import com.hicksteam.arc.DAO;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class User
@@ -12,6 +13,13 @@ public class User
     private String username;
     private String password;
     private String email;
+
+    public User(String username, String password, String email)
+    {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 
     public User()
     {
@@ -25,15 +33,24 @@ public class User
     }
 
     //--------Data Access
-    public static long createPost(User user)
+    public static long createUser(User user)
     {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("id", user.getId());
         parameters.put("username", user.getUsername());
         parameters.put("password", user.getPassword());
         parameters.put("email", user.getEmail());
-        Number number = new SimpleJdbcInsert(DAO.getJdbcTemplate()).usingGeneratedKeyColumns("id").withSchemaName("arc").withTableName("user").executeAndReturnKey(parameters);
+        Number number = new SimpleJdbcInsert(DAO.getJdbcTemplate()).usingGeneratedKeyColumns("id").withSchemaName("arc").withTableName("users").executeAndReturnKey(parameters);
         return number.longValue();
+    }
+
+    public static boolean userExists(String username)
+    {
+        List<User> users = DAO.getJdbcTemplate().query("select * from Users where username=?", new Object[]{username}, new UserRowMapper());
+        if (users.size() > 0)
+            return true;
+
+        return false;
     }
 
     public long getId()
