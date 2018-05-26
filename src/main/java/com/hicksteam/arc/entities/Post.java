@@ -65,6 +65,13 @@ public class Post
         JsonNode title = postData.findValue("title");
         JsonNode selfText = postData.findValue("selftext");
 
+        //popular demo users from the reddit posts
+        JsonNode authorName = postData.findValue("author");
+        String userName = authorName.textValue();
+        boolean userExists = User.userExists(userName);
+        if (!userExists)
+            User.createUser(new User(userName, "1234", userName+"@yahoo.com"));
+
         Post post = new Post();
         post.setTitle(title.asText());
         post.setContent(selfText.textValue());
