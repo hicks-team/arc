@@ -1,6 +1,7 @@
 package com.hicksteam.arc;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.hicksteam.arc.entities.Comment;
 import com.hicksteam.arc.entities.Post;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.slf4j.Logger;
@@ -17,6 +18,8 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 @SpringBootApplication
 public class Application
@@ -43,6 +46,7 @@ public class Application
 
             createTables();
 
+            // seed post data
             Client client = JerseyClientBuilder.newClient();
             WebTarget target = client.target("https://api.reddit.com/r/programming/best");
             Invocation.Builder builder = target.request(MediaType.APPLICATION_JSON);
@@ -52,6 +56,27 @@ public class Application
                     .findValue("data")
                     .withArray("children")
                     .forEach(Post::mapJSONtoObject);
+
+            // seed comment data
+            AtomicLong previousCommentId = new AtomicLong();
+            Post.getAllPosts().forEach(post -> {
+
+                previousCommentId.set(0);
+                for (int i = 0; i < 3; i++)
+                {
+                    Comment comment = new Comment();
+                    comment.setPostId(post.getId());
+                    comment.setAuthorId(new Random().nextInt(3));
+                    comment.setParentCommentId(previousCommentId.get());
+                    comment.setContent("blah");
+                    if (previousCommentId.longValue() > 0)
+                        comment.setParentCommentId(previousCommentId.longValue());
+
+                    long id = Comment.createComment(comment);
+                    previousCommentId.set(id);
+                }
+
+            });
         };
     }
 
