@@ -1,17 +1,7 @@
 import React from 'react';
-import {Route, Router, Switch} from 'react-router-dom'
-import {createBrowserHistory} from 'history'
+import {Link} from 'react-router-dom'
 
 export default class PostStub extends React.Component {
-
-    constructor(props) {
-        super(props);
-        let self = this;
-    }
-
-    componentDidMount()
-    {
-    }
 
     render() {
         const post = this.props.post;
@@ -19,19 +9,16 @@ export default class PostStub extends React.Component {
 
         return (
             <div className="box is-small">
-                <article className="media">
-                    <div className="media-content">
-                        <div className="content">
-                            <p>
-                                {i+1}. {post.title}
-                                <br />
-                                {post.author}
-                                <br />
-                                comments: {post.comments.length}
-                            </p>
-                        </div>
-                    </div>
-                </article>
+                <p>
+                    {i+1}. {post.title}
+                    <br />
+                    {post.author}
+                    <br />
+
+                    <Link to={`/posts/${post.id}`}>
+                        comments: {post.comments.length}
+                    </Link>
+                </p>
             </div>
         );
     }

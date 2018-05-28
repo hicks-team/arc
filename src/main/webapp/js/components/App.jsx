@@ -7,6 +7,7 @@ import Footer from "./Footer.jsx";
 import Header from "./Header.jsx";
 import MyHelmet from "./MyHelmet.jsx";
 import PostStub from "./PostStub.jsx";
+import Post from "./Post.jsx";
 
 export default class App extends React.Component {
 
@@ -34,22 +35,20 @@ export default class App extends React.Component {
     }
     
     render() {
-        const postsDiv = this.state.posts.map((post, i) => {
-            return (
-                <PostStub post={post} i={i} />
-            );
-        });
+        const posts = this.state.posts;
 
         return (
             <Router history={this.state.history}>
                 <div>
                     <MyHelmet />
                     <Header />
-                    <div style={{padding: "10px"}}>
-                        {postsDiv}
-                    </div>
-                    {/*<Route exact path='/admin/systemSettings' render={() => <SystemSettings onThemeChange={this.handleThemeChange} />}/>*/}
 
+                    <div style={{padding: "10px"}}>
+                        <Switch>
+                            <Route exact path='/' render={() => <Posts posts={posts} />}/>
+                            <Route exact path='/posts/:id' render={(props) => <Post {...props} posts={posts} />}/>
+                        </Switch>
+                    </div>
 
                     <Footer serverProcessingTime="123"/>
                 </div>
@@ -57,3 +56,11 @@ export default class App extends React.Component {
         );
     }
 }
+
+const Posts = ({posts}) => (
+    posts.map((post, i) => {
+        return (
+            <PostStub post={post} i={i} key={post.id} />
+        );
+    })
+);
