@@ -6,6 +6,7 @@ import $ from "jquery";
 import Footer from "./Footer.jsx";
 import Header from "./Header.jsx";
 import MyHelmet from "./MyHelmet.jsx";
+import PostStub from "./PostStub.jsx";
 
 export default class App extends React.Component {
 
@@ -35,21 +36,7 @@ export default class App extends React.Component {
     render() {
         const postsDiv = this.state.posts.map((post, i) => {
             return (
-                <div className="box is-small">
-                    <article className="media">
-                        <div className="media-content">
-                            <div className="content">
-                                <p>
-                                    {post.title}
-                                    <br />
-                                    {post.author}
-                                    <br />
-                                    comments: {post.comments.length}
-                                </p>
-                            </div>
-                        </div>
-                    </article>
-                </div>
+                <PostStub post={post} i={i} />
             );
         });
 
