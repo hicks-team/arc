@@ -25,6 +25,10 @@ public class Comment
         this.content = content;
     }
 
+    public Comment()
+    {
+    }
+
     @Override
     public String toString()
     {

@@ -46,20 +46,23 @@ public class Post
         parameters.put("author_id", post.getAuthorId());
         Number number = new SimpleJdbcInsert(DAO.getJdbcTemplate()).usingGeneratedKeyColumns("id").withSchemaName("arc").withTableName("posts").executeAndReturnKey(parameters);
         return number.longValue();
-
-//        DAO.getJdbcTemplate().update("insert into posts (title, content, author_id) values (?, ?, ?)", post.getTitle(), post.getContent(), post.getAuthorId());
     }
 
     public static List<Post> getAllPosts()
     {
         String query = "select * from posts";
-        List<Post> posts = DAO.getJdbcTemplate()
+        return DAO.getJdbcTemplate()
                 .query(query, new Object[]{}, new PostRowMapper());
-
-        return posts;
     }
 
-    public static Post mapJSONtoObject(JsonNode json)
+    public static Post getById(long id)
+    {
+        String query = "select * from posts where id=?";
+        return DAO.getJdbcTemplate()
+                .queryForObject(query, new Object[]{id}, new PostRowMapper());
+    }
+
+    public static void mapJSONtoObject(JsonNode json)
     {
         JsonNode postData = json.findValue("data");
         JsonNode title = postData.findValue("title");
@@ -80,7 +83,7 @@ public class Post
         post.setContent(selfText.textValue());
         post.setAuthorId(usernameId);
 
-        return post;
+        long postId = Post.createPost(post);
     }
 
     public String getAuthor()

@@ -1,10 +1,7 @@
 package com.hicksteam.arc;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.hicksteam.arc.entities.Comment;
-import com.hicksteam.arc.entities.CommentRowMapper;
 import com.hicksteam.arc.entities.Post;
-import com.hicksteam.arc.entities.PostRowMapper;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +17,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class Application
@@ -46,7 +41,7 @@ public class Application
     {
         return args -> {
 
-            testDB();
+            createTables();
 
             Client client = JerseyClientBuilder.newClient();
             WebTarget target = client.target("https://api.reddit.com/r/programming/best");
@@ -56,14 +51,11 @@ public class Application
             jsonNode
                     .findValue("data")
                     .withArray("children")
-                    .forEach(child -> {
-                        Post post = Post.mapJSONtoObject(child);
-                        Post.createPost(post);
-                    });
+                    .forEach(Post::mapJSONtoObject);
         };
     }
 
-    private void testDB()
+    private void createTables()
     {
         log.info("Creating tables");
 
