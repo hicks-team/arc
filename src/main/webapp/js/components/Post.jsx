@@ -45,6 +45,8 @@ const Comments = ({commentTree}) => (
             commentTree.map((comment, i) => {
                 return (
                     <div className="box is-small" style={{padding: "2px 2px 2px 10px"}} key={comment.id}>
+                        {comment.id}
+                        <br/>
                         {comment.author}
                         <br />
                         {comment.content}
