@@ -68,15 +68,59 @@ public class Application
                     comment.setPostId(post.getId());
                     comment.setAuthorId(new Random().nextInt(3));
                     comment.setParentCommentId(previousCommentId.get());
-                    comment.setContent("blah");
+                    comment.setContent("blah " + i);
                     if (previousCommentId.longValue() > 0)
                         comment.setParentCommentId(previousCommentId.longValue());
 
                     long id = Comment.createComment(comment);
                     previousCommentId.set(id);
                 }
-
             });
+
+            Post post = Post.getById(1);
+
+            Comment comment = new Comment();
+            comment.setPostId(post.getId());
+            comment.setAuthorId(new Random().nextInt(3));
+            comment.setParentCommentId(new Long(2));
+            comment.setContent("anotehr comment link to 2");
+            long id1 = Comment.createComment(comment);
+
+            Comment comment2 = new Comment();
+            comment.setPostId(post.getId());
+            comment.setAuthorId(new Random().nextInt(3));
+            comment.setParentCommentId(id1);
+            comment.setContent("anotehr comment link to " + id1);
+            long id2 = Comment.createComment(comment);
+
+            Comment comment3 = new Comment();
+            comment.setPostId(post.getId());
+            comment.setAuthorId(new Random().nextInt(3));
+            comment.setParentCommentId(id1);
+            comment.setContent("anotehr comment link to " + id1);
+            long id3 = Comment.createComment(comment);
+
+            Comment comment4 = new Comment();
+            comment.setPostId(post.getId());
+            comment.setAuthorId(new Random().nextInt(3));
+            comment.setParentCommentId(id3);
+            comment.setContent("anotehr comment link to " + id3);
+            long id4 = Comment.createComment(comment);
+
+            Comment comment5 = new Comment();
+            comment.setPostId(post.getId());
+            comment.setAuthorId(new Random().nextInt(3));
+            comment.setParentCommentId(new Long(1));
+            comment.setContent("anotehr comment link to 1");
+            long id5 = Comment.createComment(comment);
+
+            Comment comment6 = new Comment();
+            comment.setPostId(post.getId());
+            comment.setAuthorId(new Random().nextInt(3));
+            comment.setParentCommentId(new Long(1));
+            comment.setContent("anotehr comment link to 1");
+            long id6 = Comment.createComment(comment);
+
         };
     }
 
