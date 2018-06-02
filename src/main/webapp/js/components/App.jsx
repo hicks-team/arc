@@ -26,7 +26,7 @@ export default class App extends React.Component {
     {
         let self = this;
         $.ajax({
-            url: '/posts',
+            url: 'api/posts',
             async: false,
             success: function (data) {
                 self.setState({posts: JSON.parse(data)});

@@ -16,7 +16,7 @@ export default class PostStub extends React.Component {
                     <br />
 
                     <Link to={`/posts/${post.id}`}>
-                        comments: {post.comments.length}
+                        comments: {post.comments}
                     </Link>
                 </p>
             </div>

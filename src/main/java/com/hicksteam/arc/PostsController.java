@@ -13,13 +13,13 @@ public class PostsController
 {
     private static final Logger log = LoggerFactory.getLogger(PostsController.class);
 
-    @RequestMapping(method = RequestMethod.GET, path = "/posts")
+    @RequestMapping(method = RequestMethod.GET, path = "/api/posts")
     public String getAllPosts()
     {
         return JSONutil.writeValueAsString(Post.getAllPosts());
     }
 
-    @RequestMapping("/posts/{id}")
+    @RequestMapping("/api/posts/{id}")
     public String deletePost(@PathVariable long id)
     {
         return JSONutil.writeValueAsString(Post.getById(id));

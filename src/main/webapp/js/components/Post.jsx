@@ -25,25 +25,31 @@ export default class Post extends React.Component {
                 <div className="box is-small">
                     {post.title}
                     <br />
+                    {post.author}
+                    <br />
                     {post.content}
                     <br />
                 </div>
                 <br />
 
                 Comments:
-                <Comments comments={post.comments} />
+                <Comments commentTree={post.commentTree} />
             </div>
         );
     }
 }
 
-const Comments = ({comments}) => (
-    <div style={{padding: "10px"}}>
+const Comments = ({commentTree}) => (
+    <div style={{padding: "2px 2px 2px 10px"}}>
         {
-            comments.map((comment, i) => {
+            commentTree.map((comment, i) => {
                 return (
-                    <div className="box is-small" key={comment.id}>
-                        {i+1}. {comment.content}
+                    <div className="box is-small" style={{padding: "2px 2px 2px 10px"}} key={comment.id}>
+                        {comment.author}
+                        <br />
+                        {comment.content}
+
+                        <Comments commentTree={comment.children} />
                     </div>
                 );
             })

@@ -82,6 +82,23 @@ public class Comment
                 new Object[]{postId}, new CommentRowMapper());
     }
 
+    public static List<Comment> getRootCommentsByPostId(long postId)
+    {
+        return DAO.getJdbcTemplate().query("select * from comments where post_id=? and parent_comment_id=0",
+                new Object[]{postId}, new CommentRowMapper());
+    }
+
+    public List<Comment> getChildren()
+    {
+        return DAO.getJdbcTemplate().query("select * from comments where post_id=? and parent_comment_id=?",
+                new Object[]{postId, id}, new CommentRowMapper());
+    }
+
+    public String getAuthor()
+    {
+        User user = User.getById(this.authorId);
+        return user != null ? user.getUsername() : "";
+    }
 
     //----------GETTERS & SETTERS
     public long getId()

@@ -1,6 +1,7 @@
 package com.hicksteam.arc.entities;
 
 import com.hicksteam.arc.DAO;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import java.util.HashMap;
@@ -51,8 +52,15 @@ public class User
 
     public static User getById(long id)
     {
-        return DAO.getJdbcTemplate().queryForObject("select * from users where id=?",
-                new Object[]{id}, new UserRowMapper());
+        try
+        {
+            return DAO.getJdbcTemplate().queryForObject("select * from users where id=?",
+                    new Object[]{id}, new UserRowMapper());
+        }
+        catch (EmptyResultDataAccessException e)
+        {
+            return null;
+        }
     }
 
     public static User getUserByUsername(String username)

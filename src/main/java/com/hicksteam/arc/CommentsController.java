@@ -17,7 +17,7 @@ public class CommentsController
     private static final Logger log = LoggerFactory.getLogger(CommentsController.class);
 
     @GET
-    @RequestMapping("/comments")
+    @RequestMapping("/api/comments")
     public String getAllComments()
     {
         String results = "";
@@ -36,7 +36,7 @@ public class CommentsController
     }
 
     @DELETE
-    @RequestMapping("/comments/{id}")
+    @RequestMapping("/api/comments/{id}")
     public String deleteComment()
     {
         StringBuilder results = new StringBuilder();

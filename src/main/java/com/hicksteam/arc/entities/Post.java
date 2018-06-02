@@ -92,9 +92,14 @@ public class Post
         return user != null ? user.getUsername() : "";
     }
 
-    public List<Comment> getComments()
+    public int getComments()
     {
-        return Comment.getByPostId(this.id);
+        return Comment.getByPostId(this.id).size();
+    }
+
+    public List<Comment> getCommentTree()
+    {
+        return Comment.getRootCommentsByPostId(this.id);
     }
 
     //
