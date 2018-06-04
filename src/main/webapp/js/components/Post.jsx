@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from "jquery";
 
 export default class Post extends React.Component {
 
@@ -57,10 +58,10 @@ class Comments extends React.Component
 
             const replyBox = this.state.replyBox && this.state.replyNumber === i ?
                 <div>
-                <textarea defaultValue='Enter reply here'>
+                <textarea placeholder='Enter reply here' id="newComment">
                 </textarea>
                     <br/>
-                    <button onClick={() => console.log('hi')}>
+                    <button onClick={(e) => this.submitReply(e, comment.id)}>
                         Submit
                     </button>
                 </div> :
@@ -84,7 +85,6 @@ class Comments extends React.Component
             );
         })
 
-
         return (
             <div style={{padding: "2px 2px 2px 10px"}}>
                 {box}
@@ -98,7 +98,15 @@ class Comments extends React.Component
             replyBox: !this.state.replyBox,
             replyNumber: number,
         })
+    }
 
+    submitReply(event, commentId)
+    {
+        let self = this;
+        const reply = $( '#newComment' ).val();
+        $.post( 'api/comments/post&parentId=' + commentId + '&commentContent=' + reply,
+            function(data)
+            {});
     }
 
 }

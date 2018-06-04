@@ -102,7 +102,6 @@ public class Post
         return Comment.getRootCommentsByPostId(this.id);
     }
 
-    //
 
     public long getId()
     {

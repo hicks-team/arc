@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import java.util.List;
 
 @RestController
@@ -44,5 +45,13 @@ public class CommentsController
         String query = "select";
 
         return "";
+    }
+
+
+    @POST
+    @RequestMapping("api/comments/post/{id}")
+    public void createComment()
+    {
+
     }
 }
