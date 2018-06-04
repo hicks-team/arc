@@ -82,6 +82,13 @@ public class Comment
                 new Object[]{postId}, new CommentRowMapper());
     }
 
+    public static Comment getCommentById(long commentId)
+    {
+        String query = "select * from Comments where id=?";
+        return DAO.getJdbcTemplate()
+                .queryForObject(query, new Object[]{commentId}, new CommentRowMapper());
+    }
+
     public static List<Comment> getRootCommentsByPostId(long postId)
     {
         return DAO.getJdbcTemplate().query("select * from comments where post_id=? and parent_comment_id=0",

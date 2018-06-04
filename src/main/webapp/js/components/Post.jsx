@@ -104,9 +104,11 @@ class Comments extends React.Component
     {
         let self = this;
         const reply = $( '#newComment' ).val();
-        $.post( 'api/comments/post&parentId=' + commentId + '&commentContent=' + reply,
+        $.post( '/api/comments/post?parentId=' + commentId + '&content=' + reply,
             function(data)
             {});
+
+        window.location.reload();
     }
 
 }

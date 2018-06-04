@@ -5,6 +5,7 @@ import com.hicksteam.arc.entities.Comment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.DELETE;
@@ -47,11 +48,24 @@ public class CommentsController
         return "";
     }
 
-
     @POST
-    @RequestMapping("api/comments/post/{id}")
-    public void createComment()
+    @RequestMapping("/api/comments/post")
+    public void createComment(
+            @RequestParam(value = "parentId") String parentId,
+            @RequestParam(value = "content", defaultValue = "") String content
+    )
     {
+        Comment parent = Comment.getCommentById(Long.valueOf(parentId));
 
+        if (parent != null)
+        {
+            Comment comment = new Comment();
+            comment.setParentCommentId(Long.valueOf(parentId));
+            comment.setContent(content);
+            comment.setAuthorId(0);
+            comment.setPostId(parent.getPostId());
+
+            Comment.createComment(comment);
+        }
     }
 }
