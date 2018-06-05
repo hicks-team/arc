@@ -27,7 +27,7 @@ export default class MyHelmet extends React.Component {
                 <link rel="stylesheet" href={themeUrl} />
 
                 {/*<link rel="shortcut icon" href={basename + "/images/puffin.png"} />*/}
-                <link rel="stylesheet" type="text/css" href={basename + "/style.css"} media="screen" />
+                {/*<link rel="stylesheet" type="text/css" href={basename + "/style.css"} media="screen" />*/}
                 {/*<script src={basename + "/js/util.js"} />*/}
                 {/*<script src={basename + "/js/ajaxUtil.js"} />*/}
             </Helmet>);

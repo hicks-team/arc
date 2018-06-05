@@ -1,10 +1,13 @@
 package com.hicksteam.arc;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hicksteam.arc.entities.Comment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +15,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CommentsController
@@ -35,6 +39,55 @@ public class CommentsController
         }
 
         return results;
+    }
+
+    public static class AjaxComment
+    {
+        private long postId;
+        private long parentCommentId;
+        private String text;
+
+        public long getPostId()
+        {
+            return postId;
+        }
+
+        public void setPostId(long postId)
+        {
+            this.postId = postId;
+        }
+
+        public long getParentCommentId()
+        {
+            return parentCommentId;
+        }
+
+        public void setParentCommentId(long parentCommentId)
+        {
+            this.parentCommentId = parentCommentId;
+        }
+
+        public String getText()
+        {
+            return text;
+        }
+
+        public void setText(String text)
+        {
+            this.text = text;
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/api/comments")
+    public Comment create(@RequestBody AjaxComment ajaxComment)
+    {
+        Comment comment = new Comment();
+        comment.setPostId(ajaxComment.getPostId());
+        comment.setParentCommentId(ajaxComment.getParentCommentId());
+        comment.setContent(ajaxComment.getText());
+        Comment.createComment(comment);
+
+        return comment;
     }
 
     @DELETE

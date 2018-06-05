@@ -3,10 +3,7 @@ package com.hicksteam.arc;
 import com.hicksteam.arc.entities.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class PostsController
@@ -19,9 +16,18 @@ public class PostsController
         return JSONutil.writeValueAsString(Post.getAllPosts());
     }
 
+
+    @RequestMapping(method = RequestMethod.POST, path = "/api/posts")
+    public void create(@RequestBody String requestBody)
+    {
+        Post post = new Post();
+//        post.set
+    }
+
     @RequestMapping("/api/posts/{id}")
     public String deletePost(@PathVariable long id)
     {
+        // todo: implement
         return JSONutil.writeValueAsString(Post.getById(id));
     }
 }

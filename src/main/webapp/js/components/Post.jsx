@@ -1,17 +1,11 @@
 import React from 'react';
 import $ from "jquery";
+import CommentInput from "./CommentInput.jsx";
 
 export default class Post extends React.Component {
 
     constructor(props) {
         super(props);
-        let self = this;
-
-        const match = this.props.match;
-        const postId = Number(match.params.id);
-
-        this.state = {};
-        this.state.post = this.props.posts.find(post => post.id === postId)
     }
 
     componentDidMount()
@@ -19,7 +13,9 @@ export default class Post extends React.Component {
     }
 
     render() {
-        const post = this.state.post;
+        const match = this.props.match;
+        const postId = Number(match.params.id);
+        const post = this.props.posts.find(post => post.id === postId);
 
         return (
             <div>
@@ -32,6 +28,8 @@ export default class Post extends React.Component {
                     <br />
                 </div>
                 <br />
+
+                <CommentInput postId={post.id} getPosts={this.props.getPosts} />
 
                 Comments:
                 <Comments commentTree={post.commentTree} />
@@ -47,14 +45,13 @@ class Comments extends React.Component
     {
         super(props);
         this.state= {
-                commentTree: props.commentTree,
                 replyBox: false,
             }
     }
 
     render()
     {
-        const box = this.state.commentTree.map((comment, i) => {
+        const box = this.props.commentTree.map((comment, i) => {
 
             const replyBox = this.state.replyBox && this.state.replyNumber === i ?
                 <div>

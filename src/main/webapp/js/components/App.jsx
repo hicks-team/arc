@@ -13,6 +13,7 @@ export default class App extends React.Component {
 
     constructor(props) {
         super(props);
+        this.getPosts = this.getPosts.bind(this);
         let self = this;
 
         // const basename = '/arc/view/';
@@ -24,9 +25,14 @@ export default class App extends React.Component {
 
     componentDidMount()
     {
+        this.getPosts();
+    }
+
+    getPosts()
+    {
         let self = this;
         $.ajax({
-            url: 'api/posts',
+            url: '/api/posts',
             async: false,
             success: function (data) {
                 self.setState({posts: JSON.parse(data)});
@@ -46,7 +52,7 @@ export default class App extends React.Component {
                     <div style={{padding: "10px"}}>
                         <Switch>
                             <Route exact path='/' render={() => <Posts posts={posts} />}/>
-                            <Route exact path='/posts/:id' render={(props) => <Post {...props} posts={posts} />}/>
+                            <Route exact path='/posts/:id' render={(props) => <Post {...props} posts={posts} getPosts={this.getPosts} />}/>
                         </Switch>
                     </div>
 
