@@ -17,6 +17,9 @@ export default class Post extends React.Component {
         const postId = Number(match.params.id);
         const post = this.props.posts.find(post => post.id === postId);
 
+        if (!post)
+            return (<div>loading...</div>);
+
         return (
             <div>
                 <div className="box is-small">
@@ -55,8 +58,7 @@ class Comments extends React.Component
 
             const replyBox = this.state.replyBox && this.state.replyNumber === i ?
                 <div>
-                <textarea placeholder='Enter reply here' id="newComment">
-                </textarea>
+                    <textarea placeholder='Enter reply here' id="newComment" />
                     <br/>
                     <button onClick={(e) => this.submitReply(e, comment.id)}>
                         Submit
@@ -80,7 +82,7 @@ class Comments extends React.Component
                     <Comments commentTree={comment.children} />
                 </div>
             );
-        })
+        });
 
         return (
             <div style={{padding: "2px 2px 2px 10px"}}>

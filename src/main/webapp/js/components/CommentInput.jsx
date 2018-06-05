@@ -22,6 +22,9 @@ export default class AddRootComment extends React.Component {
         const parentCommentId = 0;
         const text = $('#commentTextarea').val();
 
+        if (!text)
+            alert('Add comment text.');
+
         const data = JSON.stringify({postId: postId, parentCommentId: parentCommentId, text: text});
 
         $.ajax({
@@ -31,6 +34,7 @@ export default class AddRootComment extends React.Component {
             contentType:"application/json; charset=utf-8",
             success: function (data) {
                 self.handlePostsChange();
+                $('#commentTextarea').val("");
             }
         });
     }
