@@ -33,6 +33,17 @@ module.exports = {
             }
         ]
     },
+    devServer: {
+        port: 9090,
+        proxy: {
+            "/api/*": {
+                target: "http://localhost:8080"
+            }
+        },
+        contentBase: path.join(__dirname, 'src/main/webapp'),
+        publicPath: '/js/dist/mem',
+        historyApiFallback: true
+    },
     plugins: [
         new Visualizer(), new HardSourceWebpackPlugin()
     ]

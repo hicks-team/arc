@@ -1,7 +1,7 @@
 import React from "react";
 import $ from "jquery";
 
-export default class AddRootComment extends React.Component {
+export default class CommentInput extends React.Component {
 
     constructor(props) {
         super(props);
@@ -19,8 +19,8 @@ export default class AddRootComment extends React.Component {
         let self = this;
 
         const postId = this.props.postId;
-        const parentCommentId = 0;
-        const text = $('#commentTextarea').val();
+        const parentCommentId = this.props.parentCommentId;
+        const text = $('#commentTextarea' + parentCommentId).val();
 
         if (!text)
             alert('Add comment text.');
@@ -42,7 +42,7 @@ export default class AddRootComment extends React.Component {
     render() {
         return (
             <div style={{padding: "2px 2px 2px 10px"}}>
-                <textarea id="commentTextarea">
+                <textarea id={"commentTextarea" + this.props.parentCommentId}>
                     add a comment
                 </textarea>
                 <button onClick={this.submitComment}>Submit</button>

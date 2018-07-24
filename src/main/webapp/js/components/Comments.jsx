@@ -1,5 +1,5 @@
 import React from "react";
-import $ from "jquery";
+import CommentInput from "./CommentInput.jsx";
 
 export default class Comments extends React.Component
 {
@@ -16,33 +16,28 @@ export default class Comments extends React.Component
         const box = this.props.commentTree.map((comment, i) => {
 
             const replyBox = this.state.replyBox && this.state.replyNumber === i ?
-                <div>
-                <textarea placeholder='Enter reply here' id="newComment">
-                </textarea>
-                    <br/>
-                    <button onClick={(e) => this.submitReply(e, comment.id)}>
-                        Submit
-                    </button>
-                </div> :
+                <CommentInput postId={comment.postId} parentCommentId={comment.parentCommentId} getPosts={this.props.getPosts}/> :
                 '';
 
             return (
                 <div className="box is-small" style={{padding: "2px 2px 2px 10px"}} key={comment.id}>
                     <span>
-                        <br/>
-                        {comment.author}
+
+                        <span style={{fontSize: '11px'}}>{comment.author}</span>
                         <br />
-                        {comment.id}-{comment.content}
+                        <span title={'id: ' + comment.id}>
+                            {comment.content}
+                        </span>
                         <br/>
                     </span>
-                    <a onClick={() => this.showReplyBox(i)}>Reply</a>
+                    <span style={{fontSize: '11px'}}><a onClick={() => this.showReplyBox(i)}>Reply</a></span>
 
                     {replyBox}
 
                     <Comments commentTree={comment.children} />
                 </div>
             );
-        })
+        });
 
         return (
             <div style={{padding: "2px 2px 2px 10px"}}>
@@ -58,16 +53,4 @@ export default class Comments extends React.Component
             replyNumber: number,
         })
     }
-
-    submitReply(event, commentId)
-    {
-        let self = this;
-        const reply = $( '#newComment' ).val();
-        $.post( '/api/comments/post?parentId=' + commentId + '&content=' + reply, (data) =>
-        {
-           this.props.getPosts();
-        });
-
-    }
-
 }

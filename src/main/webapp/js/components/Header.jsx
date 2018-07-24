@@ -45,7 +45,7 @@ export default class Header extends React.Component {
 
                     <div className="navbar-menu" id="navMenu">
                         <div className="navbar-start">
-                            <NavLink to='/' className="navbar-item">ARC</NavLink>
+                            <NavLink to='/' className="navbar-item">ARC 3.0</NavLink>
                         </div>
                         <div className="navbar-end">
                             <Link to='/logout'  className="navbar-item">

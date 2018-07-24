@@ -28,11 +28,9 @@ export default class Post extends React.Component {
                     {post.author}
                     <br />
                     {post.content}
-                    <br />
                 </div>
-                <br />
 
-                <CommentInput postId={post.id} getPosts={this.props.getPosts} />
+                <CommentInput postId={post.id} parentCommentId={0} getPosts={this.props.getPosts} />
 
                 Comments:
                 <Comments commentTree={post.commentTree} getPosts={this.props.getPosts}/>
