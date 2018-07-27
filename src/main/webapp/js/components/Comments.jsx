@@ -16,7 +16,7 @@ export default class Comments extends React.Component
         const box = this.props.commentTree.map((comment, i) => {
 
             const replyBox = this.state.replyBox && this.state.replyNumber === i ?
-                <CommentInput postId={comment.postId} parentCommentId={comment.parentCommentId} getPosts={this.props.getPosts}/> :
+                <CommentInput postId={comment.postId} parentCommentId={comment.id} getPosts={this.props.getPosts}/> :
                 '';
 
             return (
@@ -34,7 +34,7 @@ export default class Comments extends React.Component
 
                     {replyBox}
 
-                    <Comments commentTree={comment.children} />
+                    <Comments commentTree={comment.children} getPosts={this.props.getPosts}/>
                 </div>
             );
         });
