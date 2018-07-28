@@ -23,7 +23,10 @@ export default class CommentInput extends React.Component {
         const text = $('#commentTextarea' + parentCommentId).val();
 
         if (!text)
+        {
             alert('Add comment text.');
+            return;
+        }
 
         const data = JSON.stringify({postId: postId, parentCommentId: parentCommentId, text: text});
 
@@ -34,7 +37,7 @@ export default class CommentInput extends React.Component {
             contentType:"application/json; charset=utf-8",
             success: function (data) {
                 self.handlePostsChange();
-                $('#commentTextarea').val("");
+                $('#commentTextarea' + parentCommentId).val("");
             }
         });
 
@@ -45,7 +48,7 @@ export default class CommentInput extends React.Component {
     render() {
         return (
             <div style={{padding: "2px 2px 2px 10px"}}>
-                <textarea id={"commentTextarea" + this.props.parentCommentId} defaultValue={'add a comment'} />
+                <textarea id={"commentTextarea" + this.props.parentCommentId} placeholder={'add a comment'} />
                 <button onClick={this.submitComment}>Submit</button>
             </div>
         )
