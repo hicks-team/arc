@@ -38,15 +38,14 @@ export default class CommentInput extends React.Component {
             }
         });
 
-        this.props.toggleReplyBox();
+        if (this.props.toggleReplyBox) // the top level 'make a comment' input shouldn't be hidden
+            this.props.toggleReplyBox();
     }
 
     render() {
         return (
             <div style={{padding: "2px 2px 2px 10px"}}>
-                <textarea id={"commentTextarea" + this.props.parentCommentId}>
-                    add a comment
-                </textarea>
+                <textarea id={"commentTextarea" + this.props.parentCommentId} defaultValue={'add a comment'} />
                 <button onClick={this.submitComment}>Submit</button>
             </div>
         )
