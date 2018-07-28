@@ -37,6 +37,8 @@ export default class CommentInput extends React.Component {
                 $('#commentTextarea').val("");
             }
         });
+
+        this.props.toggleReplyBox();
     }
 
     render() {
