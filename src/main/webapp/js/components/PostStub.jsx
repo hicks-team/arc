@@ -9,16 +9,23 @@ export default class PostStub extends React.Component {
 
         return (
             <div className="box is-small">
-                <p>
-                    {i+1}. {post.title}
-                    <br />
-                    {post.author}
-                    <br />
+                <table>
+                    <tr>
+                        <td>{i+1}.</td>
+                        <td>
+                            <p>
+                                <span className="is-size-6">{post.title}</span>
+                                <br />
+                                <span className="is-size-7">{post.author}</span>
+                                <br />
 
-                    <Link to={`/posts/${post.id}`}>
-                        comments: {post.comments}
-                    </Link>
-                </p>
+                                <Link to={`/posts/${post.id}`}>
+                                    <span className="is-size-7">comments: {post.comments}</span>
+                                </Link>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
             </div>
         );
     }

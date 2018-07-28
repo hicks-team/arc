@@ -23,11 +23,11 @@ export default class Post extends React.Component {
         return (
             <div>
                 <div className="box is-small">
-                    {post.title}
+                    <span className="is-size-6">{post.title}</span>
                     <br />
-                    {post.author}
+                    <span className="is-size-7">{post.author}</span>
                     <br />
-                    {post.content}
+                    <span className="is-size-7">{post.content}</span>
                 </div>
 
                 <CommentInput postId={post.id} parentCommentId={0} getPosts={this.props.getPosts} />

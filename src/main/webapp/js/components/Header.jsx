@@ -33,7 +33,7 @@ export default class Header extends React.Component {
                 <div className="container">
                     <div className="navbar-brand">
                         <div className="navbar-item">
-                            {/*<img src={"/images/arc.png"} alt="Arc" />*/}
+                            <img src={"/favicon-32x32.png"} alt="Arc" />
                         </div>
 
                         <button className="button navbar-burger" data-target="navMenu">
@@ -45,14 +45,14 @@ export default class Header extends React.Component {
 
                     <div className="navbar-menu" id="navMenu">
                         <div className="navbar-start">
-                            <NavLink to='/' className="navbar-item">ARC 3.0</NavLink>
+                            <NavLink to='/' className="navbar-item is-size-3">ARC 0.0.1</NavLink>
                         </div>
                         <div className="navbar-end">
-                            <Link to='/logout'  className="navbar-item">
-                                <span className="icon is-medium has-text-light">
-                                    <i className="fas fa-lg fa-sign-out-alt" />
-                                </span>
-                            </Link>
+                            {/*<Link to='/logout'  className="navbar-item">*/}
+                                {/*<span className="icon is-medium">*/}
+                                    {/*<i className="fas fa-lg fa-sign-out-alt" />*/}
+                                {/*</span>*/}
+                            {/*</Link>*/}
                         </div>
                     </div>
                 </div>

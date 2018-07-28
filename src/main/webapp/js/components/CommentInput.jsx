@@ -48,8 +48,8 @@ export default class CommentInput extends React.Component {
     render() {
         return (
             <div style={{padding: "2px 2px 2px 10px"}}>
-                <textarea id={"commentTextarea" + this.props.parentCommentId} placeholder={'add a comment'} />
-                <button onClick={this.submitComment}>Submit</button>
+                <textarea id={"commentTextarea" + this.props.parentCommentId} className="textarea" placeholder={'add a comment'} />
+                <button className="button is-primary" onClick={this.submitComment}>Submit</button>
             </div>
         )
     }
