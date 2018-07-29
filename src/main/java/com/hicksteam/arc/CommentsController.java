@@ -1,21 +1,15 @@
 package com.hicksteam.arc;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hicksteam.arc.entities.Comment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class CommentsController
@@ -92,13 +86,11 @@ public class CommentsController
 
     @DELETE
     @RequestMapping("/api/comments/{id}")
-    public String deleteComment()
+    public String deleteComment(@PathVariable Long id)
     {
-        StringBuilder results = new StringBuilder();
+        int rowsUpdated = Comment.deleteComment(id);
 
-        String query = "select";
-
-        return "";
+        return rowsUpdated + " rows updated";
     }
 
     @POST

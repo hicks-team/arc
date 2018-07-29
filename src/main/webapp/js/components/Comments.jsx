@@ -1,5 +1,6 @@
 import React from "react";
 import CommentInput from "./CommentInput.jsx";
+import $ from "jquery";
 
 export default class Comments extends React.Component
 {
@@ -24,6 +25,7 @@ class Comment extends React.Component{
     constructor(props)
     {
         super(props);
+        this.deleteComment = this.deleteComment.bind(this);
         this.toggleReplyBox = this.toggleReplyBox.bind(this);
         this.state = {
             replyBox: false,
@@ -49,13 +51,31 @@ class Comment extends React.Component{
                         </span>
                         <br/>
                     </span>
-                <span style={{fontSize: '11px'}}><a onClick={() => this.toggleReplyBox()}>Reply</a></span>
+                <span style={{fontSize: '11px'}}>
+                    <a onClick={() => this.toggleReplyBox()}>Reply</a>
+                    &nbsp;&nbsp;
+                    <a onClick={() => this.deleteComment()}>Delete</a>
+                </span>
 
                 {replyBox}
 
                 <Comments commentTree={comment.children} getPosts={this.props.getPosts}/>
             </div>
         );
+    }
+
+    deleteComment()
+    {
+        let self = this;
+        $.ajax({
+            method: 'DELETE',
+            url: '/api/comments/' + self.props.id,
+            async: false,
+            success: function (data) {
+                console.log(data);
+                self.props.getPosts();
+            }
+        });
     }
 
     toggleReplyBox()

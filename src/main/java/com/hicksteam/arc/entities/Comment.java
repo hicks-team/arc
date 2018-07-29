@@ -67,6 +67,12 @@ public class Comment
         return number.longValue();
     }
 
+    public static int deleteComment(long id)
+    {
+        String sql = "update comments set content='DELETED' where id=?";
+        return DAO.getJdbcTemplate().update(sql, id);
+    }
+
     public static List<Comment> getAllComments()
     {
         String query = "select * from comments";
