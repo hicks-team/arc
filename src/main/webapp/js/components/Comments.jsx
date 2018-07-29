@@ -69,7 +69,7 @@ class Comment extends React.Component{
         let self = this;
         $.ajax({
             method: 'DELETE',
-            url: '/api/comments/' + self.props.id,
+            url: '/api/comments/' + self.props.comment.id,
             async: false,
             success: function (data) {
                 console.log(data);
