@@ -2,6 +2,7 @@ const path = require('path');
 var Visualizer = require('webpack-visualizer-plugin');
 
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     entry: './src/main/webapp/js/dev/index.js',
@@ -45,6 +46,8 @@ module.exports = {
         historyApiFallback: true
     },
     plugins: [
-        new Visualizer(), new HardSourceWebpackPlugin()
+        new Visualizer(),
+        new HardSourceWebpackPlugin(),
+        new BundleAnalyzerPlugin()
     ]
 }

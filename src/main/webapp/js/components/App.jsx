@@ -1,48 +1,27 @@
 import React from 'react';
 import {Route, Router, Switch} from 'react-router-dom'
 import {createBrowserHistory} from 'history'
-import $ from "jquery";
 
 import Footer from "./Footer.jsx";
 import Header from "./Header.jsx";
 import MyHelmet from "./MyHelmet.jsx";
-import PostStub from "./PostStub.jsx";
+import PostsList from "./PostsList.jsx";
 import Post from "./Post.jsx";
 
 export default class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.getPosts = this.getPosts.bind(this);
-        let self = this;
 
         // const basename = '/arc/view/';
         const basename = '/';
-        const history = createBrowserHistory({ basename });
-        self.state = {history: history};
-        self.state.posts = [];
-    }
-
-    componentDidMount()
-    {
-        this.getPosts();
-    }
-
-    getPosts()
-    {
-        let self = this;
-        $.ajax({
-            url: '/api/posts',
-            async: false,
-            success: function (data) {
-                self.setState({posts: JSON.parse(data)});
-            }
-        });
+        this.state = {
+            history: createBrowserHistory({ basename }),
+            posts: []
+        };
     }
     
     render() {
-        const posts = this.state.posts;
-
         return (
             <Router history={this.state.history}>
                 <div>
@@ -51,8 +30,12 @@ export default class App extends React.Component {
 
                     <div style={{padding: "10px"}}>
                         <Switch>
-                            <Route exact path='/' render={() => <Posts posts={posts} />}/>
-                            <Route exact path='/posts/:id' render={(props) => <Post {...props} posts={posts} getPosts={this.getPosts} />}/>
+                            <Route exact path='/' render={() =>
+                                <PostsList />
+                            }/>
+                            <Route exact path='/posts/:id' render={(props) =>
+                                <Post {...props} />
+                            }/>
                         </Switch>
                     </div>
 
@@ -62,11 +45,3 @@ export default class App extends React.Component {
         );
     }
 }
-
-const Posts = ({posts}) => (
-    posts.map((post, i) => {
-        return (
-            <PostStub post={post} i={i} key={post.id} />
-        );
-    })
-);

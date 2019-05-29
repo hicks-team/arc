@@ -90,7 +90,27 @@ public class CommentsController
     {
         int rowsUpdated = Comment.deleteComment(id);
 
-        return rowsUpdated + " rows updated";
+        return JSONutil.writeValueAsString(new DeleteCommentResults(rowsUpdated + " rows updated"));
+    }
+
+    public static class DeleteCommentResults
+    {
+        String body = "";
+
+        public DeleteCommentResults(String body)
+        {
+            this.body = body;
+        }
+
+        public String getBody()
+        {
+            return body;
+        }
+
+        public void setBody(String body)
+        {
+            this.body = body;
+        }
     }
 
     @POST
